@@ -1,0 +1,74 @@
+# -----------------------------------------------------------------------------
+# Gaussian blur parameters
+# -----------------------------------------------------------------------------
+blur:
+  # the sigma vlaue for the gaussian function
+  sigma: 1
+  # the kernel radius, the dimensions of the kernel will be: radius * 2 + 1
+  radius: 9
+
+# -----------------------------------------------------------------------------
+# Line integral convolution parameters
+# -----------------------------------------------------------------------------
+lic:
+  # Line integral convolution kernel length
+  # The kernel length defines the number of points in each line segment in one direction (L).
+  # The total length of the line segment therefore would be 2*L+1 (+1 is for the for center pixel)
+  # If the line segment length is too large, the calculated value for all pixels in the image would
+  # be very close to each other. On the other hand if the line segment length is too small, then an
+  # insufficient amount of filtering occurs.
+  # Cobral, Leedom - "Imaging vector fiellds using line integral convolution", page 3;
+  kernellength: 10
+  #In the implementation of the algorithm, each delta s(i) is multiplied by a small roundoff
+  # term, to insure that entry into to adjacent cell occurs.
+  roundoff: 1.1
+
+# -----------------------------------------------------------------------------
+# Edge tangent flow parameters
+# -----------------------------------------------------------------------------
+etf:
+  # size of the etf kernel, default 5
+  kernelradius: 5
+  # number of iteration while creating the ETF, default 3
+  numberofiterations: 3
+
+# -----------------------------------------------------------------------------
+# Edge detection parameters
+# -----------------------------------------------------------------------------
+fdog:
+  # number of iterations for the FDoG, default 3
+  iterations: 3
+  # determines the length of the line segments S, default 3
+  sigma.m: 3
+  # controls the size of the center interval
+  # by selecting sigma.m, sigma.c is automatically obtained, default 1
+  sigma.c: 1
+  # controls the size of the surrounding interval, usually 1.6*sigma.c
+  # sigma.m determines the length of the gradient segments, T, in a way that
+  # the value for the gaussian function for sigma.s and T is less than some value e (ex. e=0.001), default 1.6
+  sigma.s: 1.6
+  # controls the level of noise detected, ranges in [0.97, 1.0], default 0.99
+  ro: 0.997
+  # length of the line segments in the gradient direction, on one side of the center pixel, default 4
+  t: 4
+  # length of the line segments in calculating FDOG, default 15
+  s: 15
+  # threshold level for the final edge detection decision, default 0.5
+  tau: 0.5
+
+# -----------------------------------------------------------------------------
+# Region smoothing parameters
+# -----------------------------------------------------------------------------
+fbl:
+  # Determines the kernel size S for the Gaussian along the flow axis
+  sigmae: 2
+  # Sigma value for the Gaussian in the color space distance
+  re: 50
+  # length of the kernel for the Gaussian along the flow axis
+  s: 6
+  # Determines the kernel size T for the Gaussian along the gradient vector
+  sigmag: 2
+  # Sigma value for the Gaussian in the color space distance
+  rg: 10
+  # length of the kernel for the Gaussian along the gradient vector
+  t: 6
