@@ -29,11 +29,12 @@ public class FlowUtils {
      * @param t number of points in one direction
      * @return list of 2t+1 points in direction of gradient vector
      */
-    public static ArrayList<Point2D.Double> calculateGradientPoints(Point2D.Double x,
-            Point2D.Double gradientVector,
-            int imageWidth,
-            int imageHeight,
-            int t) {
+    public static ArrayList<Point2D.Double> calculateGradientPoints(final Point2D.Double x,
+            final Point2D.Double gradientVector,
+            final int imageWidth,
+            final int imageHeight,
+            final int t) {
+
         final ArrayList<Point2D.Double> points = new ArrayList<Point2D.Double>();
         // add the center point as first point
         points.add(x);
@@ -72,15 +73,14 @@ public class FlowUtils {
      * multiplied by some value delta to the current point.
      *
      * @param centerPoint starting point
-     * @param vector the vector in whom's direction the points should be
-     * calculated
+     * @param vector the vector in whom's direction the points should be calculated
      * @param numberOfPoints number of points to find
-     * @return list of points in the direction of the given vector from the
-     * starting point
+     * @return list of points in the direction of the given vector from the starting point
      */
-    public static List<Point2D.Double> findPointsInVectorDirection(Point2D.Double centerPoint,
-            Point2D.Double vector,
-            int numberOfPoints) {
+    public static List<Point2D.Double> findPointsInVectorDirection(final Point2D.Double centerPoint,
+            final Point2D.Double vector,
+            final int numberOfPoints) {
+
         List<Point2D.Double> points = new ArrayList<Point2D.Double>();
 
         // check for zero length vector
@@ -118,7 +118,7 @@ public class FlowUtils {
      * @param ro controls the level of noise detected (tipically ranges in [0.97 - 1.0])
      * @return value of difference of gausians function
      */
-    public static double calculateDog(double x, double sigmaC, double sigmaS, double ro) {
+    public static double calculateDog(final double x, final double sigmaC, final double sigmaS, final double ro) {
         double gausianC = calculateGausian(x, sigmaC);
         double gausianS = calculateGausian(x, sigmaS);
 
@@ -132,12 +132,11 @@ public class FlowUtils {
      * @param sigma sigma value in gausian function
      * @return value of gausian function for value x
      */
-    public static double calculateGausian(double x, double sigma) {
+    public static double calculateGausian(final double x, final double sigma) {
         if (sigma == 0) {
             return 0;
         } else {
-            return (1 / (sigma * Math.sqrt(2 * Math.PI)))
-                * Math.pow(Math.E, (-x * x / (2 * sigma * sigma)));
+            return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.pow(Math.E, (-x * x / (2 * sigma * sigma)));
         }
     }
 }

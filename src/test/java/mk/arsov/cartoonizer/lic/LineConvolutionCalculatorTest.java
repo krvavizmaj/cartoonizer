@@ -5,194 +5,188 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.annotation.Resource;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * Tests for LineConvolutionCalculator class.
  */
-public class LineConvolutionCalculatorTest extends TestCase {
-  
-	/** SobelGradient. */
-  @Resource
-	private SobelGradient sobelGradient;
-  
-  /** {@link LineConvolutionCalculator} .*/
-  @Resource
-  private LineConvolutionCalculator lineConvolutionCalculator;
-  
-	/**
-	 * Test method for {@link LineConvolutionCalculator#calculate(Point2D.Double[][], PlanarImage)}.
-	 * 
-	 * @throws IOException IOException
-	 */
-  @Test
-	public void testCalculate() throws IOException {
-    // load image
-    ClassPathResource testImageFileName = new ClassPathResource("test_lic_grayscale.png");
-    PlanarImage planarImage = JAI.create("fileload", testImageFileName.getFile().getAbsolutePath());
-    
-    int kernelLength = 4;
-    double roundoff = 1.1;
-    
-		Point2D.Double[][] vectorField = sobelGradient.calculateTangentVectorField(planarImage.getAsBufferedImage());
-		BufferedImage resultImage = lineConvolutionCalculator.calculate(vectorField, planarImage.getAsBufferedImage(), kernelLength, roundoff);
-		
-		Assert.assertEquals(172, ((resultImage.getRGB(3, 5) % 256) + 256) % 256);
-	}
-  
-	/**
-	 * Test getLineSegmentPoints.
-	 * 
-	 * @throws IOException IOException 
-	 */
-  @Test
-	public void testGetLineSegmentPoints() throws IOException {
-    // load image
-    ClassPathResource testImageFileName = new ClassPathResource("test_lic_grayscale.png");
-    PlanarImage planarImage = JAI.create("fileload", testImageFileName.getFilename());
-    
-    // calculate tangent vectors
-    Point2D.Double[][] tangentVectors = sobelGradient.calculateTangentVectorField(planarImage.getAsBufferedImage());
-		
-    lineConvolutionCalculator.setKernelLength(4);
-    lineConvolutionCalculator.setRoundoff(1.1D);
-		ArrayList<Point2D.Double> pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(3, 5));
-		
-		Assert.assertEquals(9, pointsInLine.size());
-		Point2D.Double point = new Point2D.Double(3, 5);
-		Assert.assertEquals(point, pointsInLine.get(0));
-		point = new Point2D.Double(2, 5);
-    Assert.assertEquals(point, pointsInLine.get(1));
-    point = new Point2D.Double(4, 5);
-    Assert.assertEquals(point, pointsInLine.get(2));
-    point = new Point2D.Double(2, 6);
-    Assert.assertEquals(point, pointsInLine.get(3));
-    point = new Point2D.Double(5, 6);
-    Assert.assertEquals(point, pointsInLine.get(4));
-    point = new Point2D.Double(1, 6);
-    Assert.assertEquals(point, pointsInLine.get(5));
-    point = new Point2D.Double(5, 7);
-    Assert.assertEquals(point, pointsInLine.get(6));
-    point = new Point2D.Double(0, 6);
-    Assert.assertEquals(point, pointsInLine.get(7));
-    point = new Point2D.Double(4, 7);
-    Assert.assertEquals(point, pointsInLine.get(8));
-    
-    pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(3, 3));
-    
-    Assert.assertEquals(9, pointsInLine.size());
-    point = new Point2D.Double(3, 3);
-    Assert.assertEquals(point, pointsInLine.get(0));
-    point = new Point2D.Double(2, 3);
-    Assert.assertEquals(point, pointsInLine.get(1));
-    point = new Point2D.Double(4, 3);
-    Assert.assertEquals(point, pointsInLine.get(2));
-    point = new Point2D.Double(2, 4);
-    Assert.assertEquals(point, pointsInLine.get(3));
-    point = new Point2D.Double(5, 3);
-    Assert.assertEquals(point, pointsInLine.get(4));
-    point = new Point2D.Double(1, 4);
-    Assert.assertEquals(point, pointsInLine.get(5));
-    point = new Point2D.Double(6, 3);
-    Assert.assertEquals(point, pointsInLine.get(6));
-    point = new Point2D.Double(1, 5);
-    Assert.assertEquals(point, pointsInLine.get(7));
-    point = new Point2D.Double(7, 3);
-    Assert.assertEquals(point, pointsInLine.get(8));
-    
-    pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(7, 3));
-    
-    Assert.assertEquals(9, pointsInLine.size());
-    point = new Point2D.Double(7, 3);
-    Assert.assertEquals(point, pointsInLine.get(0));
-    point = new Point2D.Double(6, 3);
-    Assert.assertEquals(point, pointsInLine.get(1));
-    point = new Point2D.Double(8, 3);
-    Assert.assertEquals(point, pointsInLine.get(2));
-    point = new Point2D.Double(5, 3);
-    Assert.assertEquals(point, pointsInLine.get(3));
-    point = new Point2D.Double(8, 4);
-    Assert.assertEquals(point, pointsInLine.get(4));
-    point = new Point2D.Double(5, 2);
-    Assert.assertEquals(point, pointsInLine.get(5));
-    point = new Point2D.Double(8, 5);
-    Assert.assertEquals(point, pointsInLine.get(6));
-    point = new Point2D.Double(5, 1);
-    Assert.assertEquals(point, pointsInLine.get(7));
-    point = new Point2D.Double(7, 5);
-    Assert.assertEquals(point, pointsInLine.get(8));
-	}
-	
-	/**
-	 * Test shortestDistanceToEdge method.
-	 */
-	@Test
-	public void testShortestDistanceToEdge() {
-		LineConvolutionCalculator lineConvolutionCalculator = new LineConvolutionCalculator();
+public class LineConvolutionCalculatorTest {
 
-		Point2D.Double vector = new Point2D.Double(1, 0.3);
-		double x = 3.2;
-		double y = 3.6;
-		Assert.assertEquals(0.8352245, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.000005);
-		
-		vector = new Point2D.Double(0, 1);
-		x = 2.6;
-		y = 1.3;
-		Assert.assertEquals(0.7, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-		
-		vector = new Point2D.Double(-0.2, 1);
-    x = 4.7;
-    y = 2.3;
-    Assert.assertEquals(0.713863, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+    private SobelGradient sobelGradient;
+
+    private LineConvolutionCalculator lineConvolutionCalculator;
+
+    @Before
+    public void setUp() {
+        this.sobelGradient = new SobelGradient();
+        this.lineConvolutionCalculator = new LineConvolutionCalculator();
+    }
+
+    /**
+     * Test method for {@link LineConvolutionCalculator#calculate(Point2D.Double[][], BufferedImage, int, double)}.
+     *
+     * @throws IOException IOException
+     */
+    @Test 
+    public void testCalculate() throws IOException {
+        // load image
+        PlanarImage planarImage = JAI.create("fileload", "src/test/resources/images/test_lic_grayscale.png");
     
-    vector = new Point2D.Double(-1, 0.6);
-    x = 0.3;
-    y = 0.3;
-    Assert.assertEquals(0.349857, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(-1, 0);
-    x = 4.8;
-    y = 2.4;
-    Assert.assertEquals(0.8, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(-1, -0.1);
-    x = 4.1;
-    y = 3.3;
-    Assert.assertEquals(0.100499, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(-0.3, -1);
-    x = 3.6;
-    y = 2.1;
-    Assert.assertEquals(0.104403, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(0, -1);
-    x = 3.6;
-    y = 2.1;
-    Assert.assertEquals(0.1, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(0.2, -1);
-    x = 4.4;
-    y = 5.8;
-    Assert.assertEquals(0.815843, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(1, -0.4);
-    x = 2.6;
-    y = 3.9;
-    Assert.assertEquals(0.430813, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-    
-    vector = new Point2D.Double(1, 0);
-    x = 3.1;
-    y = 2.8;
-    Assert.assertEquals(0.9, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
-	}
+        int kernelLength = 4;
+        double roundoff = 1.1;
+
+        Point2D.Double[][] vectorField = sobelGradient.calculateTangentVectorField(planarImage.getAsBufferedImage());
+        BufferedImage resultImage = lineConvolutionCalculator.calculate(vectorField, planarImage.getAsBufferedImage(), kernelLength, roundoff);
+
+        Assert.assertEquals(172, ((resultImage.getRGB(3, 5) % 256) + 256) % 256);
+    }
+
+    /**
+     * Test getLineSegmentPoints.
+     *
+     * @throws IOException IOException
+     */
+    @Test
+    public void testGetLineSegmentPoints() throws IOException {
+        // load image
+        PlanarImage planarImage = JAI.create("fileload", "src/test/resources/images/test_lic_grayscale.png");
+
+        // calculate tangent vectors
+        Point2D.Double[][] tangentVectors = sobelGradient.calculateTangentVectorField(planarImage.getAsBufferedImage());
+
+        ArrayList<Point2D.Double> pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(3, 5), 4, 1.1D);
+
+        Assert.assertEquals(9, pointsInLine.size());
+        Point2D.Double point = new Point2D.Double(3, 5);
+        Assert.assertEquals(point, pointsInLine.get(0));
+        point = new Point2D.Double(2, 5);
+        Assert.assertEquals(point, pointsInLine.get(1));
+        point = new Point2D.Double(4, 5);
+        Assert.assertEquals(point, pointsInLine.get(2));
+        point = new Point2D.Double(2, 6);
+        Assert.assertEquals(point, pointsInLine.get(3));
+        point = new Point2D.Double(5, 6);
+        Assert.assertEquals(point, pointsInLine.get(4));
+        point = new Point2D.Double(1, 6);
+        Assert.assertEquals(point, pointsInLine.get(5));
+        point = new Point2D.Double(5, 7);
+        Assert.assertEquals(point, pointsInLine.get(6));
+        point = new Point2D.Double(0, 6);
+        Assert.assertEquals(point, pointsInLine.get(7));
+        point = new Point2D.Double(4, 7);
+        Assert.assertEquals(point, pointsInLine.get(8));
+
+        pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(3, 3), 4, 1.1D);
+
+        Assert.assertEquals(9, pointsInLine.size());
+        point = new Point2D.Double(3, 3);
+        Assert.assertEquals(point, pointsInLine.get(0));
+        point = new Point2D.Double(2, 3);
+        Assert.assertEquals(point, pointsInLine.get(1));
+        point = new Point2D.Double(4, 3);
+        Assert.assertEquals(point, pointsInLine.get(2));
+        point = new Point2D.Double(2, 4);
+        Assert.assertEquals(point, pointsInLine.get(3));
+        point = new Point2D.Double(5, 3);
+        Assert.assertEquals(point, pointsInLine.get(4));
+        point = new Point2D.Double(1, 4);
+        Assert.assertEquals(point, pointsInLine.get(5));
+        point = new Point2D.Double(6, 3);
+        Assert.assertEquals(point, pointsInLine.get(6));
+        point = new Point2D.Double(1, 5);
+        Assert.assertEquals(point, pointsInLine.get(7));
+        point = new Point2D.Double(7, 3);
+        Assert.assertEquals(point, pointsInLine.get(8));
+
+        pointsInLine = lineConvolutionCalculator.getLineSegmentPoints(tangentVectors, new Point2D.Double(7, 3), 4, 1.1D);
+
+        Assert.assertEquals(9, pointsInLine.size());
+        point = new Point2D.Double(7, 3);
+        Assert.assertEquals(point, pointsInLine.get(0));
+        point = new Point2D.Double(6, 3);
+        Assert.assertEquals(point, pointsInLine.get(1));
+        point = new Point2D.Double(8, 3);
+        Assert.assertEquals(point, pointsInLine.get(2));
+        point = new Point2D.Double(5, 3);
+        Assert.assertEquals(point, pointsInLine.get(3));
+        point = new Point2D.Double(8, 4);
+        Assert.assertEquals(point, pointsInLine.get(4));
+        point = new Point2D.Double(5, 2);
+        Assert.assertEquals(point, pointsInLine.get(5));
+        point = new Point2D.Double(8, 5);
+        Assert.assertEquals(point, pointsInLine.get(6));
+        point = new Point2D.Double(5, 1);
+        Assert.assertEquals(point, pointsInLine.get(7));
+        point = new Point2D.Double(7, 5);
+        Assert.assertEquals(point, pointsInLine.get(8));
+    }
+
+    /**
+     * Test shortestDistanceToEdge method.
+     */
+    @Test
+    public void testShortestDistanceToEdge() {
+        LineConvolutionCalculator lineConvolutionCalculator = new LineConvolutionCalculator();
+
+        Point2D.Double vector = new Point2D.Double(1, 0.3);
+        double x = 3.2;
+        double y = 3.6;
+        Assert.assertEquals(0.8352245, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.000005);
+
+        vector = new Point2D.Double(0, 1);
+        x = 2.6;
+        y = 1.3;
+        Assert.assertEquals(0.7, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(-0.2, 1);
+        x = 4.7;
+        y = 2.3;
+        Assert.assertEquals(0.713863, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(-1, 0.6);
+        x = 0.3;
+        y = 0.3;
+        Assert.assertEquals(0.349857, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(-1, 0);
+        x = 4.8;
+        y = 2.4;
+        Assert.assertEquals(0.8, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(-1, -0.1);
+        x = 4.1;
+        y = 3.3;
+        Assert.assertEquals(0.100499, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(-0.3, -1);
+        x = 3.6;
+        y = 2.1;
+        Assert.assertEquals(0.104403, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(0, -1);
+        x = 3.6;
+        y = 2.1;
+        Assert.assertEquals(0.1, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(0.2, -1);
+        x = 4.4;
+        y = 5.8;
+        Assert.assertEquals(0.815843, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(1, -0.4);
+        x = 2.6;
+        y = 3.9;
+        Assert.assertEquals(0.430813, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+
+        vector = new Point2D.Double(1, 0);
+        x = 3.1;
+        y = 2.8;
+        Assert.assertEquals(0.9, lineConvolutionCalculator.shortestDistanceToEdge(vector, x, y), 0.00005);
+    }
 
 }

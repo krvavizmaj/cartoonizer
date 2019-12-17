@@ -30,7 +30,8 @@ public class ImageUtils {
      * @param height the height of the vector field
      * @return array containing vector for each pixel
      */
-    public static Point2D.Double[][] createCircularVectorField(int width, int height) {
+    public static Point2D.Double[][] createCircularVectorField(final int width, final int height) {
+
         Point2D.Double[][] vectorField = new Point2D.Double[height][width];
 
         int centerRow = height / 2;
@@ -55,7 +56,8 @@ public class ImageUtils {
      * @param source the source image.
      * @return grayscaled image of the original image
      */
-    public static BufferedImage toGrayscale(BufferedImage source) {
+    public static BufferedImage toGrayscale(final BufferedImage source) {
+
         BufferedImage result = new BufferedImage(source.getWidth(), source.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 
         if (source.getColorModel().getNumComponents() < 3) {
@@ -82,10 +84,10 @@ public class ImageUtils {
      * @param blurSigma
      * @return blurred image
      */
-    public static BufferedImage blur(BufferedImage sourceImage, int blurKernelRadius, double blurSigma) {
+    public static BufferedImage blur(final BufferedImage sourceImage, final int blurKernelRadius, final double blurSigma) {
+
         logger.info("Calculating blurred image from the input image");
-        BufferedImage blurredImage = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(),
-            BufferedImage.TYPE_3BYTE_BGR);
+        BufferedImage blurredImage = new BufferedImage(sourceImage.getWidth(), sourceImage.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 
         // calculate kernel
         int kernelSize = blurKernelRadius * 2 + 1;
@@ -95,8 +97,7 @@ public class ImageUtils {
                 final int x = j - blurKernelRadius;
                 final int y = i - blurKernelRadius;
 
-                kernel[i][j] = 1 / (2 * Math.PI * blurSigma * blurSigma)
-                  * Math.pow(Math.E, -(x * x + y * y) / (2 * blurSigma * blurSigma));
+                kernel[i][j] = 1 / (2 * Math.PI * blurSigma * blurSigma) * Math.pow(Math.E, -(x * x + y * y) / (2 * blurSigma * blurSigma));
             }
         }
 
@@ -125,12 +126,41 @@ public class ImageUtils {
     }
 
     /**
+     * Transform and rgb value into CIEL*ab space.
+     *
+     * @param rgb the rgb value
+     * @return array containing the L*ab values
+     */
+    public static double[] rgbToLab(final double[] rgb) {
+
+        double[] xyz = rgbToXYZ(rgb);
+        double[] lab = xyzToLab(xyz);
+
+        return lab;
+    }
+
+    /**
+     * Saves the given image on disk with the given file name.
+     *
+     * @param image the image to be saved to disk
+     * @param fileName the name of the image file
+     */
+    public static void saveImage(final BufferedImage image, final String fileName) {
+        logger.info("Saving image {}", fileName);
+        try {
+            ImageIO.write(image, "PNG", new File(fileName));
+        } catch (IOException e) {
+            logger.info("Cannot save image to file {}", fileName);
+        }
+    }
+
+    /**
      * Transform an rgb value into CIE XYZ space.
      *
      * @param rgb the rgb value
      * @return an array with the XYZ values
      */
-    protected static double[] rgbToXYZ(double[] rgb) {
+    protected static double[] rgbToXYZ(final double[] rgb) {
         double newR = rgb[0] / 255.0D;
         double newG = rgb[1] / 255.0D;
         double newB = rgb[2] / 255.0D;
@@ -171,7 +201,7 @@ public class ImageUtils {
      * @param xyz the xyz value
      * @return array representing the Lab values
      */
-    protected static double[] xyzToLab(double[] xyz) {
+    protected static double[] xyzToLab(final double[] xyz) {
         double newX = xyz[0] / 95.047;
         double newY = xyz[1] / 100.0;
         double newZ = xyz[2] / 108.883;
@@ -199,34 +229,4 @@ public class ImageUtils {
 
         return lab;
     }
-
-    /**
-     * Transform and rgb value into CIEL*ab space.
-     *
-     * @param rgb the rgb value
-     * @return array containing the L*ab values
-     */
-    public static double[] rgbToLab(double[] rgb) {
-
-        double[] xyz = rgbToXYZ(rgb);
-        double[] lab = xyzToLab(xyz);
-
-        return lab;
-    }
-
-    /**
-     * Saves the given image on disk with the given file name.
-     *
-     * @param image the image to be saved to disk
-     * @param fileName the name of the image file
-     */
-    public static void saveImage(BufferedImage image, String fileName) {
-        logger.info("Saving image {}", fileName);
-        try {
-            ImageIO.write(image, "PNG", new File(fileName));
-        } catch (IOException e) {
-            logger.info("Cannot save image to file {}", fileName);
-        }
-    }
-  
 }

@@ -42,10 +42,11 @@ public class EdgeDetection {
      * @return image showing only the edges from the source image
      */
     public BufferedImage calculate(BufferedImage sourceImage,
-            final int iterations, final int blurKernelRadius, final double blurSigma,
-            final double tau, final int etfIterations, final int etfKernelRadius,
-            final double sigmaC, final double sigmaS, final double ro,
-            final double sigmaM, final int licKernelLength, final double licRoundoff, final int t) {
+            final int iterations, final double sigmaM, final double sigmaC, final double sigmaS,
+            final double ro, final int t, final double tau,
+            final int blurKernelRadius, final double blurSigma,
+            final int licKernelLength, final double licRoundoff,
+            final int etfIterations, final int etfKernelRadius) {
 
         logger.info("Running edge detection");
         BufferedImage blurredImage = ImageUtils.blur(sourceImage, blurKernelRadius, blurSigma);
