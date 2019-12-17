@@ -1,0 +1,1 @@
+##### Attempt at implementing image abstraction based on the paper "Kang, Lee, Chui - Flow-Based Image Abstraction, 2009"
