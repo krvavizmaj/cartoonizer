@@ -115,7 +115,7 @@ public class LineConvolutionCalculator {
                 } else {
                     // else calculate convolution along the line segment
                     for (int k = 0; k < lineSegmentPoints.size(); k++) {
-                        sum += whiteNoise[(int) lineSegmentPoints.get(k).getY()][(int) lineSegmentPoints.get(k).getY()];
+                        sum += whiteNoise[(int) lineSegmentPoints.get(k).getX()][(int) lineSegmentPoints.get(k).getY()];
                     }
                     sum /= (int) Math.round(lineSegmentPoints.size());
                 }
@@ -225,6 +225,7 @@ public class LineConvolutionCalculator {
 
     /**
      * Calculate the shortest distance from point (x, y) to one of the four surrounding edges of the cell, along the vector direction.
+     * The point coordinates are based on top left origin.
      *
      * @param vector the vector at location (x, y).
      * @param x x coordinate of the point.
@@ -240,6 +241,7 @@ public class LineConvolutionCalculator {
         if (vector.getY() > 0) {
             double edgeValue = Math.ceil(y);
 
+            // angle from horizontal line
             double angle;
             if (vector.getX() == 0) {
                 angle = Math.PI / 2.0D;
@@ -247,11 +249,7 @@ public class LineConvolutionCalculator {
                 angle = Math.atan(vector.getY() / vector.getX());
             }
 
-            if (Math.sin(angle) != 0) {
-                distance = Math.abs((edgeValue - y) / Math.sin(angle));
-            } else {
-                distance = Double.MAX_VALUE;
-            }
+            distance = Math.abs((edgeValue - y) / Math.sin(angle));
             if (distance < minValue) {
                 minValue = distance;
             }
@@ -268,11 +266,7 @@ public class LineConvolutionCalculator {
                 angle = Math.atan(vector.getY() / vector.getX());
             }
 
-            if (Math.sin(angle) != 0) {
-                distance = Math.abs((edgeValue - y) / Math.sin(angle));
-            } else {
-                distance = Double.MAX_VALUE;
-            }
+            distance = Math.abs((edgeValue - y) / Math.sin(angle));
             if (distance < minValue) {
                minValue = distance;
             }
@@ -289,11 +283,7 @@ public class LineConvolutionCalculator {
                 angle = Math.atan(vector.getY() / vector.getX());
             }
 
-            if (Math.cos(angle) != 0) {
-                distance = Math.abs((edgeValue - x) / Math.cos(angle));
-            } else {
-                distance = Double.MAX_VALUE;
-            }
+            distance = Math.abs((edgeValue - x) / Math.cos(angle));
             if (distance < minValue) {
                 minValue = distance;
             }
@@ -310,11 +300,7 @@ public class LineConvolutionCalculator {
                 angle = Math.atan(vector.getY() / vector.getX());
             }
 
-            if (Math.cos(angle) != 0) {
-                distance = Math.abs((edgeValue - x) / Math.cos(angle));
-            } else {
-                distance = Double.MAX_VALUE;
-            }
+            distance = Math.abs((edgeValue - x) / Math.cos(angle));
             if (distance < minValue) {
                 minValue = distance;
             }

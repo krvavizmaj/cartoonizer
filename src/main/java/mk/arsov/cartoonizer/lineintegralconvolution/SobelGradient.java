@@ -63,8 +63,7 @@ public class SobelGradient {
             }
         }
 
-        logger.info("Sobel gradient calculation finished in {} seconds",
-            (System.currentTimeMillis() - sobelStartTime) / 1000);
+        logger.info("Sobel gradient calculation finished in {} seconds", (System.currentTimeMillis() - sobelStartTime) / 1000);
         return tangentVectorField;
     }
 

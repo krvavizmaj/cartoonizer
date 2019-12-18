@@ -54,7 +54,7 @@ public class LineConvolutionCalculatorTest {
      */
     @Test
     public void testCalculateCircularField() throws IOException {
-        int kernelLength = 8;
+        int kernelLength = 16;
         double roundoff = 1.1;
 
         int rows = 512;
@@ -160,11 +160,13 @@ public class LineConvolutionCalculatorTest {
     public void testShortestDistanceToEdge() {
         LineConvolutionCalculator lineConvolutionCalculator = new LineConvolutionCalculator();
 
+        // closest is right edge
         Point2D.Double vector = new Point2D.Double(1, 0.3);
         double x = 3.2;
         double y = 3.6;
         Assert.assertEquals(0.8352245, lineConvolutionCalculator.shortestDistanceToCellEdge(vector, x, y), 0.000005);
 
+        // closest is top
         vector = new Point2D.Double(0, 1);
         x = 2.6;
         y = 1.3;
