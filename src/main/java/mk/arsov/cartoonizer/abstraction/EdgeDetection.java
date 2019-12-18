@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import mk.arsov.cartoonizer.lic.LineConvolutionCalculator;
-import mk.arsov.cartoonizer.lic.SobelGradient;
+import mk.arsov.cartoonizer.lineintegralconvolution.LineConvolutionCalculator;
+import mk.arsov.cartoonizer.lineintegralconvolution.SobelGradient;
 import mk.arsov.cartoonizer.util.FlowUtils;
 import mk.arsov.cartoonizer.util.ImageUtils;
 
@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  */
 public class EdgeDetection {
 
-    /** Logger. */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final SobelGradient sobelGradient;
@@ -98,8 +97,7 @@ public class EdgeDetection {
      */
     protected double[][] calculateHgxIntegral(final BufferedImage sourceImage,
             final Point2D.Double[][] tangentVectors, final double sigmaC, final double sigmaS, final double ro, final int t) {
-        logger.info("Starting calculation of Hg(x) values for image with size {}, {}",
-            sourceImage.getWidth(), sourceImage.getHeight());
+        logger.info("Starting calculation of Hg(x) values for image with size {}, {}", sourceImage.getWidth(), sourceImage.getHeight());
         double[][] result = new double[sourceImage.getHeight()][sourceImage.getWidth()];
         ArrayList<Point2D.Double> points;
 

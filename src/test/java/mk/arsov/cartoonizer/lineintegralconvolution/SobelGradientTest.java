@@ -1,4 +1,4 @@
-package mk.arsov.cartoonizer.lic;
+package mk.arsov.cartoonizer.lineintegralconvolution;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;

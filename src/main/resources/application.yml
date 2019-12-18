@@ -8,7 +8,7 @@ blur:
     kernelRadius: 9
 
 # -----------------------------------------------------------------------------
-# Line integral convolution parameters
+# Line integral convolution parameters (Used to visualize ETF field)
 # -----------------------------------------------------------------------------
 lic:
     # Line integral convolution kernel length
@@ -19,7 +19,7 @@ lic:
     # insufficient amount of filtering occurs.
     # Cobral, Leedom - "Imaging vector fiellds using line integral convolution", page 3;
     kernelLength: 10
-    #In the implementation of the algorithm, each delta s(i) is multiplied by a small roundoff
+    # In the implementation of the algorithm, each delta s(i) is multiplied by a small roundoff
     # term, to insure that entry into to adjacent cell occurs.
     roundoff: 1.1
 
@@ -33,7 +33,7 @@ etf:
     numberofiterations: 3
 
 # -----------------------------------------------------------------------------
-# Edge detection parameters
+# Edge detection parameters (Flow based difference of Gausians)
 # -----------------------------------------------------------------------------
 fdog:
     # number of iterations for the FDoG, default 3
@@ -57,7 +57,7 @@ fdog:
     tau: 0.5
 
 # -----------------------------------------------------------------------------
-# Region smoothing parameters
+# Region smoothing parameters (Flow based bilateral filter)
 # -----------------------------------------------------------------------------
 fbl:
     # Determines the kernel size S for the Gaussian along the flow axis

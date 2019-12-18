@@ -8,21 +8,24 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mk.arsov.cartoonizer.lic.LineConvolutionCalculator;
+import mk.arsov.cartoonizer.lineintegralconvolution.LineConvolutionCalculator;
 import mk.arsov.cartoonizer.util.FlowUtils;
 import mk.arsov.cartoonizer.util.ImageUtils;
 
+import javax.inject.Inject;
+
 /**
- * Class for calculation the flow-based bilateral filter.
+ * Region smoothing with flow-based bilateral filter.
+ *
  * Kang, Lee, Chui - Flow-Based Image Abstraction, 2009, chapter 4
  */
 public class FlowBilateralFilter {
   
-    /** Logger. */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final LineConvolutionCalculator lineConvolutionCalculator;
 
+    @Inject
     public FlowBilateralFilter(final LineConvolutionCalculator lineConvolutionCalculator) {
         this.lineConvolutionCalculator = lineConvolutionCalculator;
     }
@@ -158,7 +161,7 @@ public class FlowBilateralFilter {
      * @param rgb2 the rgb values in the other pixel
      * @return the distance in the color space between the two points
      */
-    protected double calculateColorSpaceDistance(double[] rgb1, double[] rgb2) {
+    protected double calculateColorSpaceDistance(final double[] rgb1, final double[] rgb2) {
 
         double[] lab1 = ImageUtils.rgbToLab(rgb1);
         double[] lab2 = ImageUtils.rgbToLab(rgb2);

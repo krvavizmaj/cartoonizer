@@ -1,4 +1,4 @@
-package mk.arsov.cartoonizer.lic;
+package mk.arsov.cartoonizer.lineintegralconvolution;
 
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
  */
 public class SobelGradient {
 
-    /** Logger. */
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /** Sobel gradient X kernel. */
@@ -36,7 +35,7 @@ public class SobelGradient {
      * @param sourceImage the input image.
      * @return vector field representing the tangents of the gradient vectors in each pixel.
      */
-    public Point2D.Double[][] calculateTangentVectorField(BufferedImage sourceImage) {
+    public Point2D.Double[][] calculateTangentVectorField(final BufferedImage sourceImage) {
         long sobelStartTime = System.currentTimeMillis();
 
         // This gets rid of exception for not using native acceleration
@@ -75,7 +74,7 @@ public class SobelGradient {
      * @param grayscaleImage the input image in grayscale format
      * @return array of x values from sobel operator
      */
-    protected double[][] calculateGradientX(Raster grayscaleImage) {
+    protected double[][] calculateGradientX(final Raster grayscaleImage) {
         double[][] result = new double[grayscaleImage.getHeight()][grayscaleImage.getWidth()];
 
         // convolution, gradient x
@@ -106,7 +105,7 @@ public class SobelGradient {
      * @param grayscaleImage the input image in grayscale mode
      * @return array of y values from sobel operator
      */
-    protected double[][] calculateGradientY(Raster grayscaleImage) {
+    protected double[][] calculateGradientY(final Raster grayscaleImage) {
         double[][] result = new double[grayscaleImage.getHeight()][grayscaleImage.getWidth()];
 
         // convolution, gradient y

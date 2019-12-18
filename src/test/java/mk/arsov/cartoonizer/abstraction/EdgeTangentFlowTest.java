@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
-import mk.arsov.cartoonizer.lic.LineConvolutionCalculator;
-import mk.arsov.cartoonizer.lic.SobelGradient;
+import mk.arsov.cartoonizer.lineintegralconvolution.LineConvolutionCalculator;
+import mk.arsov.cartoonizer.lineintegralconvolution.SobelGradient;
 import mk.arsov.cartoonizer.util.ImageUtils;
 
 import org.junit.Assert;

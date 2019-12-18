@@ -7,44 +7,42 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Calculate edge tangent flow.
+ *
  * See "Kang, Lee, Chui - Flow-Based Image Abstraction, 2009", chapter 2.2
  */
 public class EdgeTangentFlow {
   
-    /** Logger. */
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * Calculate the edge tangent flow.
      *
      * @param tangentVectorField the vector field used to calculate ETF
-     * @param numberOfIterations
-     * @param etfKernelRadius
+     * @param numberOfIterations number of iterations for edge detection
+     * @param etfKernelRadius radius of the detection kernel
      * @return vector field containing the ETF vectors.
      */
-    public Point2D.Double[][] calculate(final Point2D.Double[][] tangentVectorField,
-            final int numberOfIterations, final int etfKernelRadius) {
+    public Point2D.Double[][] calculate(final Point2D.Double[][] tangentVectorField, final int numberOfIterations, final int etfKernelRadius) {
         long etfStartTime = System.currentTimeMillis();
 
-        /** Gradient vector field. */
+        // Gradient vector field.
         final double[][] normalizedGradientMagnitude = new double[tangentVectorField.length][tangentVectorField[0].length];
-        final Point2D.Double[][] normalizedTangentVectors =
-            new Point2D.Double[tangentVectorField.length][tangentVectorField[0].length];
+        final Point2D.Double[][] normalizedTangentVectors = new Point2D.Double[tangentVectorField.length][tangentVectorField[0].length];
 
         // calculate normalized gradient magnitude field and normalized tangent vectors
         double gradientMagnitudeSum = 0;
         for (int i = 0; i < tangentVectorField.length; i++) {
             for (int j = 0; j < tangentVectorField[0].length; j++) {
                 normalizedGradientMagnitude[i][j] = Math.sqrt(tangentVectorField[i][j].getX() * tangentVectorField[i][j].getX()
-                    + tangentVectorField[i][j].getY() * tangentVectorField[i][j].getY());
+                        + tangentVectorField[i][j].getY() * tangentVectorField[i][j].getY());
 
                 if (normalizedGradientMagnitude[i][j] != 0) {
                     normalizedTangentVectors[i][j] =
-                        new Point2D.Double(tangentVectorField[i][j].getX() / normalizedGradientMagnitude[i][j],
-                          tangentVectorField[i][j].getY() / normalizedGradientMagnitude[i][j]);
+                            new Point2D.Double(tangentVectorField[i][j].getX() / normalizedGradientMagnitude[i][j],
+                                    tangentVectorField[i][j].getY() / normalizedGradientMagnitude[i][j]);
                 } else {
-                  normalizedTangentVectors[i][j] =
-                      new Point2D.Double(tangentVectorField[i][j].getX(), tangentVectorField[i][j].getY());
+                    normalizedTangentVectors[i][j] =
+                          new Point2D.Double(tangentVectorField[i][j].getX(), tangentVectorField[i][j].getY());
                 }
 
                 gradientMagnitudeSum += normalizedGradientMagnitude[i][j];
@@ -79,10 +77,10 @@ public class EdgeTangentFlow {
                             if ((x >= 0) && (y >= 0) && (x < tangentVectorField[0].length) && (y < tangentVectorField.length)) {
                                 // fi function is ommited, see comment for wd() method
                                 magnitude =
-                  //                  fi(normalizedTangentVectors[i][j], normalizedTangentVectors[y][x])
-                                    ws(j, i, x, y, etfKernelRadius)
-                                    * wm(normalizedGradientMagnitude, j, i, x, y)
-                                    * wd(normalizedTangentVectors[i][j], normalizedTangentVectors[y][x]);
+//                                        fi(normalizedTangentVectors[i][j], normalizedTangentVectors[y][x]) *
+                                        ws(j, i, x, y, etfKernelRadius) *
+                                        wm(normalizedGradientMagnitude, j, i, x, y) *
+                                        wd(normalizedTangentVectors[i][j], normalizedTangentVectors[y][x]);
 
                                 summedVectorX[i][j] += normalizedTangentVectors[y][x].getX() * magnitude;
                                 summedVectorY[i][j] += normalizedTangentVectors[y][x].getY() * magnitude;
@@ -93,7 +91,7 @@ public class EdgeTangentFlow {
 
                     // normalize the etf vector
                     double vectorMagnitude =
-                        Math.sqrt(summedVectorX[i][j] * summedVectorX[i][j] + summedVectorY[i][j] * summedVectorY[i][j]);
+                            Math.sqrt(summedVectorX[i][j] * summedVectorX[i][j] + summedVectorY[i][j] * summedVectorY[i][j]);
                     if (vectorMagnitude != 0) {
                         summedVectorX[i][j] /= vectorMagnitude;
                         summedVectorY[i][j] /= vectorMagnitude;
