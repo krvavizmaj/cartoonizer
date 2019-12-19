@@ -1,31 +1,17 @@
 package mk.arsov.cartoonizer.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "etf")
+/**
+ * Edge tangent flow parameters.
+ */
 public class EdgeTangentFlowConfiguration {
 
-    /** The radius of the ETF kernel. */
-    private int kernelRadius;
+    /**
+     * Size of the etf kernel.
+     */
+    public static int KERNEL_RADIUS = 5;
 
-    /** Number of iterations. */
-    private int numberOfIterations;
-
-    public int getKernelRadius() {
-        return kernelRadius;
-    }
-
-    public void setKernelRadius(int kernelRadius) {
-        this.kernelRadius = kernelRadius;
-    }
-
-    public int getNumberOfIterations() {
-        return numberOfIterations;
-    }
-
-    public void setNumberOfIterations(int numberOfIterations) {
-        this.numberOfIterations = numberOfIterations;
-    }
+    /**
+     * Number of iterations while creating the ETF.
+     * */
+    public static int NUMBER_OF_ITERATIONS = 3;
 }

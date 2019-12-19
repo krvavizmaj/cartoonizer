@@ -1,10 +1,8 @@
 package mk.arsov.cartoonizer.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "fdog")
+/**
+ * Edge detection parameters (Flow based difference of Gausians).
+ */
 public class EdgeDetectionConfiguration {
 
     /**
@@ -12,93 +10,43 @@ public class EdgeDetectionConfiguration {
      * image is superimposed to the original image and the process is run again,
      * the etf remains the same.
      */
-    private int iterations;
-
-    /** Determines the length of the line segments, S. */
-    private double sigmaM;
-
-    /** Controls the size of the center interval. */
-    private double sigmaC;
-
-    /** Controls the size of the surrounding interval. */
-    private double sigmaS;
-
-    /** Controls the level of noise detected. */
-    private double ro;
+    public static int ITERATIONS = 3;
 
     /**
-     * Length of the line segments in the gradient direction, on one side of the
-     * center pixel.
+     * Determines the length of the line segments, S.
+     * */
+    public static double SIGMA_M = 3;
+
+    /**
+     * Controls the size of the center interval.
+     * By selecting sigma.m, sigma.c is automatically obtained.
      */
-    private int t;
+    public static double SIGMA_C = 1;
 
-    /** Length of line segments in one direction. */
-    private int s;
+    /**
+     * Controls the size of the surrounding interval, usually 1.6*sigma.c
+     * sigma.m determines the length of the gradient segments, T, in a way that
+     * the value for the gaussian function for sigma.s and T is less than some value e (ex. e=0.001)
+     */
+    public static double SIGMA_S = 1.6;
 
-    /** Threshold level for the final edge detection decision. */
-    private double tau;
+    /**
+     * Controls the level of noise detected, ranges in [0.97, 1.0].
+     */
+    public static double RO = 0.997;
 
-    public int getIterations() {
-        return iterations;
-    }
+    /**
+     * Length of the line segments in the gradient direction, on one side of the center pixel.
+     */
+    public static int T = 4;
 
-    public void setIterations(int iterations) {
-        this.iterations = iterations;
-    }
+    /**
+     * Length of line segments in one direction.
+     */
+    public static int S = 15;
 
-    public double getSigmaM() {
-        return sigmaM;
-    }
-
-    public void setSigmaM(double sigmaM) {
-        this.sigmaM = sigmaM;
-    }
-
-    public double getSigmaC() {
-        return sigmaC;
-    }
-
-    public void setSigmaC(double sigmaC) {
-        this.sigmaC = sigmaC;
-    }
-
-    public double getSigmaS() {
-        return sigmaS;
-    }
-
-    public void setSigmaS(double sigmaS) {
-        this.sigmaS = sigmaS;
-    }
-
-    public double getRo() {
-        return ro;
-    }
-
-    public void setRo(double ro) {
-        this.ro = ro;
-    }
-
-    public int getT() {
-        return t;
-    }
-
-    public void setT(int t) {
-        this.t = t;
-    }
-
-    public int getS() {
-        return s;
-    }
-
-    public void setS(int s) {
-        this.s = s;
-    }
-
-    public double getTau() {
-        return tau;
-    }
-
-    public void setTau(double tau) {
-        this.tau = tau;
-    }
+    /**
+     * Threshold level for the final edge detection decision.
+     */
+    public static double TAU = 0.5;
 }

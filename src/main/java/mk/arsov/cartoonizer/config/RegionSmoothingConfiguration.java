@@ -1,75 +1,37 @@
 package mk.arsov.cartoonizer.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "fbl")
+/**
+ * Region smoothing parameters (Flow based bilateral filter).
+ */
 public class RegionSmoothingConfiguration {
 
-    /** Sigma e value. */
-    private double sigmaE;
+    /**
+     * Determines the kernel size S for the Gaussian along the flow axis
+     */
+    public static double SIGMA_E = 2;
 
-    /** Sigma value for the color space distance Gaussian. */
-    private double re;
+    /**
+     * Sigma value for the Gaussian in the color space distance
+     */
+    public static double RE = 50;
 
-    /** Length of the kernel along the flow axis, in one direction. */
-    private int s;
+    /**
+     * length of the kernel for the Gaussian along the flow axis.
+     */
+    public static int S = 6;
 
-    /** Sigma g value. */
-    private double sigmaG;
+    /**
+     * Determines the kernel size T for the Gaussian along the gradient vector.
+     */
+    public static double SIGMA_G = 2;
 
-    /** Sigma value for the color space distance Gaussian. */
-    private double rg;
+    /**
+     * Sigma value for the Gaussian in the color space distance.
+     */
+    public static double RG = 10;
 
-    /** Length of the kernel along the gradient vector, in one direction. */
-    private int t;
-
-    public double getSigmaE() {
-        return sigmaE;
-    }
-
-    public void setSigmaE(double sigmaE) {
-        this.sigmaE = sigmaE;
-    }
-
-    public double getRe() {
-        return re;
-    }
-
-    public void setRe(double re) {
-        this.re = re;
-    }
-
-    public int getS() {
-        return s;
-    }
-
-    public void setS(int s) {
-        this.s = s;
-    }
-
-    public double getSigmaG() {
-        return sigmaG;
-    }
-
-    public void setSigmaG(double sigmaG) {
-        this.sigmaG = sigmaG;
-    }
-
-    public double getRg() {
-        return rg;
-    }
-
-    public void setRg(double rg) {
-        this.rg = rg;
-    }
-
-    public int getT() {
-        return t;
-    }
-
-    public void setT(int t) {
-        this.t = t;
-    }
+    /**
+     * length of the kernel for the Gaussian along the gradient vector.
+     */
+    public static int T = 6;
 }

@@ -1,31 +1,17 @@
 package mk.arsov.cartoonizer.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-@ConfigurationProperties(prefix = "blur")
+/**
+ * Gaussian blur parameters.
+ */
 public class BlurConfiguration {
 
-    /** Sigma value for the gaussian blur. */
-    private double sigma;
+    /**
+     * Sigma value for the gaussian blur.
+     * */
+    public static double SIGMA = 1;
 
-    /** Radius of the kernel for the blur operator. */
-    private int kernelRadius;
-
-    public double getSigma() {
-        return sigma;
-    }
-
-    public void setSigma(double sigma) {
-        this.sigma = sigma;
-    }
-
-    public int getKernelRadius() {
-        return kernelRadius;
-    }
-
-    public void setKernelRadius(int kernelRadius) {
-        this.kernelRadius = kernelRadius;
-    }
+    /**
+     * The kernel radius, the dimensions of the kernel will be: radius * 2 + 1
+     */
+    public static int KERNEL_RADIUS = 9;
 }

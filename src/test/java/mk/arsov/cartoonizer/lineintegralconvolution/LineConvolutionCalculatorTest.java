@@ -37,7 +37,19 @@ public class LineConvolutionCalculatorTest {
     public void testCalculate() throws IOException {
         // load image
         PlanarImage planarImage = JAI.create("fileload", "src/test/resources/images/test_lic_grayscale.png");
-    
+//        double[][] imageData = new double[][] {
+//                {136, 134, 125, 125, 117, 111, 98, 96, 95, 96},
+//                {126, 121, 116, 120, 111, 106, 91, 87, 88, 90},
+//                {85, 80, 80, 89, 99, 92, 89, 89, 83, 73},
+//                {62, 62, 80, 94, 106, 103, 101, 101, 93, 83},
+//                {84, 94, 121, 137, 137, 137, 119, 115, 103, 88},
+//                {99, 112, 145, 157, 150, 144, 122, 115, 88, 78},
+//                {157, 163, 191, 191, 163, 151, 114, 98, 72, 57},
+//                {162, 166, 200, 196, 162, 144, 104, 85, 56, 43},
+//                {196, 200, 194, 182, 142, 126, 91, 75, 55, 42},
+//                {205, 202, 192, 181, 140, 121, 86, 73, 58, 47},
+//        };
+
         int kernelLength = 4;
         double roundoff = 1.1;
 
