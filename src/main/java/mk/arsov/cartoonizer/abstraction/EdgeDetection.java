@@ -5,8 +5,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 import mk.arsov.cartoonizer.lineintegralconvolution.LineConvolutionCalculator;
 import mk.arsov.cartoonizer.lineintegralconvolution.SobelGradient;
 import mk.arsov.cartoonizer.util.FlowUtils;
@@ -26,7 +24,6 @@ public class EdgeDetection {
     private final EdgeTangentFlow edgeTangentFlow;
     private final LineConvolutionCalculator lineConvolutionCalculator;
 
-    @Inject
     public EdgeDetection(final LineConvolutionCalculator lineConvolutionCalculator, final EdgeTangentFlow edgeTangentFlow,
             final SobelGradient sobelGradient) {
         this.lineConvolutionCalculator = lineConvolutionCalculator;

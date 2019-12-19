@@ -12,8 +12,6 @@ import mk.arsov.cartoonizer.lineintegralconvolution.LineConvolutionCalculator;
 import mk.arsov.cartoonizer.util.FlowUtils;
 import mk.arsov.cartoonizer.util.ImageUtils;
 
-import javax.inject.Inject;
-
 /**
  * Region smoothing with flow-based bilateral filter.
  *
@@ -25,7 +23,6 @@ public class FlowBilateralFilter {
 
     private final LineConvolutionCalculator lineConvolutionCalculator;
 
-    @Inject
     public FlowBilateralFilter(final LineConvolutionCalculator lineConvolutionCalculator) {
         this.lineConvolutionCalculator = lineConvolutionCalculator;
     }

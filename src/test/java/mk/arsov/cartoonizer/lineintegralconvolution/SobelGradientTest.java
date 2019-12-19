@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * Tests for SobelGrdient class.
@@ -128,8 +127,7 @@ public class SobelGradientTest {
     public void testCalculateTangentVectorFieldToFile() throws FileNotFoundException {
 
         // load image
-        ClassPathResource testImageFileName = new ClassPathResource("slika1.bmp");
-        PlanarImage planarImage = JAI.create("fileload", testImageFileName.getFilename());
+        PlanarImage planarImage = JAI.create("fileload", "src/test/resources/images/slika1.bmp");
     
         // calculate tangent vectors
         Point2D.Double[][] tangentVectors = sobelGradient.calculateTangentVectorField(planarImage.getAsBufferedImage());
